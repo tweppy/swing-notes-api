@@ -18,4 +18,9 @@ async function addUser(username, password) {
   return await userDB.insert(userObj);
 }
 
-module.exports = { getAllUsers, addUser, userDB };
+//findUser
+async function findUser(username) {
+  return await userDB.findOne({ username: username });
+}
+
+module.exports = { getAllUsers, addUser, findUser, userDB };

@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const { hashedPassword } = require("../bcrypt");
 
-const { userSignup } = require("../controllers/userController");
+const { userSignup, userLogin } = require("../controllers/userController");
 const {
   checkBody,
   checkIfUserExists,
+  checkUsername, checkPassword,
 } = require("../middleware/usersMiddleware");
 
 router.get("/");
 
 router.post("/signup", checkBody, checkIfUserExists, userSignup);
-router.post("/login", checkBody);
+router.post("/login", checkBody, checkUsername, checkPassword, userLogin);
 
 module.exports = router;
 

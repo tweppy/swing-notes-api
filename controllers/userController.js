@@ -1,5 +1,5 @@
-const { addUser } = require("../models/userModel");
-const { hashPassword } = require("../bcrypt");
+const { addUser, findUser } = require("../models/userModel");
+const { hashPassword, comparePassword } = require("../bcrypt");
 
 //signup
 async function userSignup(req, res) {
@@ -19,5 +19,16 @@ async function userSignup(req, res) {
 }
 
 //login
+async function userLogin(req, res) {
+  const { username } = req.body;
 
-module.exports = { userSignup };
+  const result = {
+    success: true,
+    userIsLoggedIn: true,
+    message: `${username} successfully logged in.`,
+  };
+
+  res.status(200).json(result);
+}
+
+module.exports = { userSignup, userLogin };
