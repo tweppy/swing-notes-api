@@ -1,16 +1,18 @@
 const Datastore = require("nedb-promises");
 let userDB = Datastore.create("./databases/users.db");
+const { hashPassword } = require("../utils");
 const { v4: uuidv4 } = require("uuid");
 
-//getAllUsers
+//getAllUsers  ---> do I need it?
 async function getAllUsers() {
   return await userDB.find({});
 }
 
 //addUser
-async function addUser(username, password) {
+async function addUser(credentials) {
+  const password = await hashPassword(credentials.password);
   const userObj = {
-    username: username,
+    username: credentials.username,
     password: password,
     userID: uuidv4(),
   };

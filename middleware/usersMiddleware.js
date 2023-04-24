@@ -1,5 +1,5 @@
 const { findUser } = require("../models/userModel");
-const { comparePassword } = require("../bcrypt");
+const { comparePassword } = require("../utils");
 const jwt = require("jsonwebtoken");
 
 const result = {
@@ -14,7 +14,8 @@ function checkBody(req, res, next) {
   if (body?.username && body?.password) {
     next();
   } else {
-    result.message = "Invalid body input. Please enter a valid username and password.";
+    result.message =
+      "Invalid body input. Please enter a valid username and password.";
     result.usernameInput = body.hasOwnProperty("username");
     result.passwordInput = body.hasOwnProperty("password");
 
@@ -55,11 +56,18 @@ async function checkUsername(req, res, next) {
 //check pwd
 async function checkPassword(req, res, next) {
   const { username, password } = req.body;
+
   const user = await findUser(username);
 
   const correctPassword = await comparePassword(password, user.password);
 
   if (correctPassword) {
+    //save 4815162342 in env?
+    const token = jwt.sign({ userID: user.userID }, "4815162342", {
+      expiresIn: 3600, // 1 hour
+    });
+    console.log('token: ', token);
+
     next();
   } else {
     result.message = "Incorrect password.";
