@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const { userSignup } = require("../controllers/userController");
-//req mws
+const { checkBody, checkIfUserExists } = require("../middleware/usersMiddleware");
 
 router.get("/");
 
-router.post("/signup", userSignup);
-router.post("/login");
+router.post("/signup", checkBody, checkIfUserExists, userSignup);
+router.post("/login", checkBody);
 
 module.exports = router;
 
