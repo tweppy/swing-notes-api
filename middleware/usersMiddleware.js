@@ -3,6 +3,7 @@ const { userDB } = require("../models/userModel");
 //checkBody
 function checkBody(req, res, next) {
   const body = req.body;
+  // userDB.remove({}, { multi: true })
 
   if (body?.username && body?.password) {
     next();

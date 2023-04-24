@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const { hashedPassword } = require("../bcrypt");
 
 const { userSignup } = require("../controllers/userController");
-const { checkBody, checkIfUserExists } = require("../middleware/usersMiddleware");
+const {
+  checkBody,
+  checkIfUserExists,
+} = require("../middleware/usersMiddleware");
 
 router.get("/");
 

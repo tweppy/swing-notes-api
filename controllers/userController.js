@@ -1,10 +1,14 @@
 const { addUser } = require("../models/userModel");
+const { hashPassword } = require("../bcrypt");
 
 //signup
 async function userSignup(req, res) {
   const { username, password } = req.body;
 
-  await addUser({ username, password });
+  //hash pwd bcrypt
+  const pwd = await hashPassword(password);
+
+  await addUser(username, pwd);
 
   const result = {
     success: true,
