@@ -38,10 +38,11 @@ async function checkIfUserExists(req, res, next) {
   }
 }
 
+//login:
+
 //check username
 async function checkUsername(req, res, next) {
   const { username } = req.body;
-
   const user = await findUser(username);
 
   if (user) {
@@ -56,7 +57,6 @@ async function checkUsername(req, res, next) {
 //check pwd
 async function checkPassword(req, res, next) {
   const { username, password } = req.body;
-
   const user = await findUser(username);
 
   const correctPassword = await comparePassword(password, user.password);
@@ -66,7 +66,7 @@ async function checkPassword(req, res, next) {
     const token = jwt.sign({ userID: user.userID }, "4815162342", {
       expiresIn: 3600, // 1 hour
     });
-    console.log('token: ', token);
+    console.log("token: ", token);
 
     next();
   } else {
@@ -76,5 +76,26 @@ async function checkPassword(req, res, next) {
   }
 }
 
+//auth
+async function auth(req, res, next) {
+  const token = req.headers.authorization.replace("Bearer ", "");
 
-module.exports = { checkBody, checkIfUserExists, checkUsername, checkPassword };
+  try {
+    const data = jwt.verify(token, "4815162342");
+    req.id = data.userID;
+    console.log(data);
+
+    next();
+  } catch (error) {
+    result.error = "Invalid token.";
+    res.status(400).json(result);
+  }
+}
+
+module.exports = {
+  checkBody,
+  checkIfUserExists,
+  checkUsername,
+  checkPassword,
+  auth,
+};
