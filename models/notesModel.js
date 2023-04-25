@@ -6,6 +6,7 @@ const { setDate } = require("../utils");
 //get all notes
 async function getAllNotes() {
   return await notesDB.find({});
+  //notesDB.remove({}, { multi: true })
 }
 
 //find note by title

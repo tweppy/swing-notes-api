@@ -6,7 +6,7 @@ const result = {
 
 //checkBody
 function checkBody(req, res, next) {
-  const {title, text} = req.body;
+  const { title, text } = req.body;
 
   if (title && text) {
     next();
@@ -22,30 +22,31 @@ function checkBody(req, res, next) {
 function checkLength(req, res, next) {
   const { title, text } = req.body;
 
-  if (title.length < 50 && text.length < 300) {
+  if (title.length <= 50 && text.length <= 300) {
     next();
   } else {
     result.error =
       "Invalid character length. Title length cannot exceed 50 characters and text cannot exceed 300 characters.";
     result.yourTitleLength = `${title.length}`;
     result.yourTextLength = `${text.length}`;
-    
+
     res.status(400).json(result);
   }
 }
 
-//checkNoteTitle (taken)
+//checkNoteTitle
 async function checkNoteTitle(req, res, next) {
-  const { title } = req.body;
+  const { title, text } = req.body;
 
   const note = await findNoteByTitle(title);
 
   if (!note) {
     next();
   } else {
-    result.error = `A note with the title '${title}' already exists. Please use a different title.`;
-
-    res.json(result);
+    //it'll show old failed title.length and nto for current error if do reg result obj
+    res.json({
+      error: `A note with the title '${title}' already exists. Please use a different title.`,
+    });
   }
 }
 
