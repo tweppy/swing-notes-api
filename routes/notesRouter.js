@@ -1,6 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
+const { get, add } = require("../controllers/notesController");
+const { checkBody, checkLength ,checkNoteTitle } = require("../middleware/notesMiddleware");
+
+router.get("/", get);
+router.post("/", checkBody, checkLength ,checkNoteTitle, add);
+router.put("/");
+router.delete("/");
+
+//use findNoteByTitle
+router.get("/search");
+
 module.exports = router;
 
 /*
