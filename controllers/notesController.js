@@ -3,6 +3,7 @@ const {
   addNote,
   editNote,
   removeNote,
+  searchTitle,
 } = require("../models/notesModel");
 const { findUserByID, findUser } = require("../models/userModel");
 
@@ -16,7 +17,7 @@ async function get(req, res) {
 async function add(req, res) {
   const data = req.body;
 
-  const user = await findUserByID(req.id)
+  const user = await findUserByID(req.id);
   await addNote(data, user);
 
   const result = {
@@ -45,4 +46,12 @@ async function remove(req, res) {
   res.status(200).json({ message: `Note with id '${data.id}' deleted.` });
 }
 
-module.exports = { add, get, edit, remove };
+async function search(req, res) {
+  const { title } = req.body;
+
+  const result = await searchTitle(title);
+
+  res.status(200).json({ result: result });
+}
+
+module.exports = { add, get, edit, remove, search };

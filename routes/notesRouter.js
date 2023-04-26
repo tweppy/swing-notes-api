@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { auth, checkHeaders } = require("../middleware/usersMiddleware");
-const { get, add, edit, remove } = require("../controllers/notesController");
+const { get, add, edit, remove, search } = require("../controllers/notesController");
 const {
   checkBody,
   checkLength,
@@ -12,12 +12,12 @@ const {
 } = require("../middleware/notesMiddleware");
 
 router.get("/", checkHeaders, auth, get);
-router.post("/", checkBody, checkLength, checkNoteTitle, checkHeaders, auth, add);
-router.put("/", checkNoteId, checkEditedBody, checkLength, checkHeaders,  auth, edit);
-router.delete("/", checkBody, checkNoteId, checkHeaders, auth, remove);
+router.post("/", checkHeaders, auth, checkBody, checkLength, checkNoteTitle, add);
+router.put("/", checkHeaders, auth, checkNoteId, checkEditedBody, checkLength, edit);
+router.delete("/", checkHeaders, auth, checkBody, checkNoteId, remove);
 
 //use findNoteByTitle
-router.get("/search");
+router.get("/search", checkHeaders, auth, search);
 
 module.exports = router;
 
