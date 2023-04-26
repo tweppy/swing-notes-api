@@ -1,12 +1,12 @@
 const Datastore = require("nedb-promises");
 let notesDB = Datastore.create("./databases/notes.db");
 const { v4: uuidv4 } = require("uuid");
-const { setDate } = require("../utils");
+const { findUser } = require("../models/userModel");
 
 //get all notes
 async function getAllNotes() {
+  // notesDB.remove({}, { multi: true })
   return await notesDB.find({});
-  //notesDB.remove({}, { multi: true })
 }
 
 //find note by title
@@ -20,13 +20,15 @@ async function findNoteById(id) {
 }
 
 //add note
-async function addNote(data) {
+async function addNote(data, user) {
   const noteObj = {
     id: uuidv4(),
     title: data.title,
     text: data.text,
-    createdAt: setDate,
-    modifiedAt: setDate,
+    createdAt: new Date().toLocaleString(),
+    modifiedAt: new Date().toLocaleString(),
+    username: user.username,
+    userID: user.userID
   };
 
   return await notesDB.insert(noteObj);
@@ -41,7 +43,7 @@ async function editNote(data) {
     $set: {
       title: data.title ? data.title : matchNote.title,
       text: data.text ? data.text : matchNote.text,
-      modifiedAt: setDate,
+      modifiedAt: new Date().toLocaleString(),
     },
   };
 
@@ -49,7 +51,9 @@ async function editNote(data) {
 }
 
 //delete note
-async function removeNote() {}
+async function removeNote(data) {
+  return await notesDB.remove({ id: data.id });
+}
 
 module.exports = {
   getAllNotes,

@@ -2,6 +2,7 @@ const { findUser } = require("../models/userModel");
 const { comparePassword } = require("../utils");
 const jwt = require("jsonwebtoken");
 
+//change this: -->  notes file look
 const result = {
   success: false,
 };
@@ -23,7 +24,7 @@ function checkBody(req, res, next) {
   }
 }
 
-//checkIfUserExists
+//checkIfUserExists for sign up
 async function checkIfUserExists(req, res, next) {
   const { username } = req.body;
 
@@ -76,6 +77,12 @@ async function checkPassword(req, res, next) {
   }
 }
 
+async function checkHeaders(req, res, next) {
+  !req.headers.authorization
+    ? res.status(400).json({ error: "Invalid header input. Please use 'Authorization' header and input correct token." })
+    : next();
+}
+
 //auth
 async function auth(req, res, next) {
   const token = req.headers.authorization.replace("Bearer ", "");
@@ -98,4 +105,5 @@ module.exports = {
   checkUsername,
   checkPassword,
   auth,
+  checkHeaders,
 };

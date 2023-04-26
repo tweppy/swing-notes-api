@@ -4,11 +4,7 @@ const {
   editNote,
   removeNote,
 } = require("../models/notesModel");
-
-//move?
-const result = {
-  success: true,
-};
+const { findUserByID, findUser } = require("../models/userModel");
 
 //get
 async function get(req, res) {
@@ -20,23 +16,33 @@ async function get(req, res) {
 async function add(req, res) {
   const data = req.body;
 
-  await addNote(data);
+  const user = await findUserByID(req.id)
+  await addNote(data, user);
 
-  result.message = `${data.title} added.`;
-  result.note = data;
+  const result = {
+    message: `${data.title} added to notes.`,
+    username: user.username,
+    userID: user.userID,
+    note: data,
+  };
+
   res.status(200).json(result);
 }
 
 //edit
 async function edit(req, res) {
   const data = req.body;
-  await editNote(data)
+  await editNote(data);
 
-  result.message = `Note '${data.id}' has been edited.`;
-  res.status(200).json(result);
+  res.status(200).json({ message: `Note '${data.id}' has been edited.` });
 }
 
 //remove
-async function remove() {}
+async function remove(req, res) {
+  const data = req.body;
+  await removeNote(data);
+
+  res.status(200).json({ message: `Note with id '${data.id}' deleted.` });
+}
 
 module.exports = { add, get, edit, remove };
