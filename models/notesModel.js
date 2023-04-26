@@ -14,6 +14,11 @@ async function findNoteByTitle(title) {
   return await notesDB.findOne({ title: title });
 }
 
+//find note by id
+async function findNoteById(id) {
+  return await notesDB.findOne({ id: id });
+}
+
 //add note
 async function addNote(data) {
   const noteObj = {
@@ -28,7 +33,20 @@ async function addNote(data) {
 }
 
 //edit note
-async function editNote() {}
+//Must have title, text, id when trying to edit. If editing title only, text field can be empty string, but the prop must be there
+async function editNote(data) {
+  const matchNote = await findNoteById(data.id);
+
+  const noteObj = {
+    $set: {
+      title: data.title ? data.title : matchNote.title,
+      text: data.text ? data.text : matchNote.text,
+      modifiedAt: setDate,
+    },
+  };
+
+  return await notesDB.update({ id: data.id }, noteObj);
+}
 
 //delete note
 async function removeNote() {}
@@ -36,6 +54,7 @@ async function removeNote() {}
 module.exports = {
   getAllNotes,
   findNoteByTitle,
+  findNoteById,
   addNote,
   editNote,
   removeNote,
