@@ -3,9 +3,9 @@ const {
   addNote,
   editNote,
   removeNote,
-  searchTitle,
+  findNoteByTitle,
 } = require("../models/notesModel");
-const { findUserByID, findUser } = require("../models/userModel");
+const { findUserByID } = require("../models/userModel");
 
 //get
 async function get(req, res) {
@@ -49,7 +49,7 @@ async function remove(req, res) {
 async function search(req, res) {
   const { title } = req.body;
 
-  const result = await searchTitle(title);
+  const result = await findNoteByTitle(title);
 
   res.status(200).json({ result: result });
 }

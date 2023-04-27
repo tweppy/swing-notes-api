@@ -35,7 +35,7 @@ async function checkIfUserExists(req, res, next) {
   } else {
     result.message = `User '${username}' already exists.`;
 
-    res.status(400).json(result);
+    res.status(409).json(result);
   }
 }
 
@@ -73,13 +73,13 @@ async function checkPassword(req, res, next) {
   } else {
     result.message = "Incorrect password.";
 
-    res.status(400).json(result);
+    res.status(401).json(result);
   }
 }
 
 async function checkHeaders(req, res, next) {
   !req.headers.authorization
-    ? res.status(400).json({ error: "Invalid header input. Please use 'Authorization' header and input correct token." })
+    ? res.status(401).json({ error: "Invalid header input credentials. Please use 'Authorization' header and input correct token." })
     : next();
 }
 
@@ -95,7 +95,7 @@ async function auth(req, res, next) {
     next();
   } catch (error) {
     result.error = "Invalid token.";
-    res.status(400).json(result);
+    res.status(498).json(result);
   }
 }
 

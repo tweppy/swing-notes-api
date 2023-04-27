@@ -15,14 +15,14 @@ async function findNoteByTitle(title) {
 }
 
 //almost the same as above, but it clashes with looking up a taken title middleware, so here's another one specifically for the search function
-async function searchTitle(title) {
-  const result =  await notesDB.findOne({ title: title });
-  if(!result) {
-    return 'No match found.'
-  }
+// async function searchTitle(title) {
+//   const result =  await notesDB.findOne({ title: title });
+//   if(result == null) {
+//     return 'boi'
+//   }
 
-  return result;
-}
+//   return result;
+// }
 
 //find note by id
 async function findNoteById(id) {
@@ -72,7 +72,6 @@ module.exports = {
   addNote,
   editNote,
   removeNote,
-  searchTitle,
 };
 
 /*

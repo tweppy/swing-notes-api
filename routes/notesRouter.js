@@ -9,24 +9,14 @@ const {
   checkNoteTitle,
   checkNoteId,
   checkEditedBody,
+  searchByTitle,
+  checkSearchBody,
 } = require("../middleware/notesMiddleware");
 
 router.get("/", checkHeaders, auth, get);
 router.post("/", checkHeaders, auth, checkBody, checkLength, checkNoteTitle, add);
 router.put("/", checkHeaders, auth, checkNoteId, checkEditedBody, checkLength, edit);
 router.delete("/", checkHeaders, auth, checkBody, checkNoteId, remove);
-
-//use findNoteByTitle
-router.get("/search", checkHeaders, auth, search);
+router.get("/search", checkHeaders, auth, checkSearchBody, searchByTitle, search);
 
 module.exports = router;
-
-/*
-/api/notes	        GET     -   Hämta anteckningar
-/api/notes	        POST    -   Spara en anteckning
-/api/notes	        PUT     -   Ändra en anteckning
-/api/notes	        DELETE  -   Ta bort en anteckning
-
-/api/notes/search	GET     -   Söka bland anteckningar (VG-krav). 
-                                Sökning sker på titel.
-*/
