@@ -198,9 +198,6 @@
         "400": {
           "description": "Invalid body input"
         },
-        "401": {
-          "description": "Invalid header input credentials"
-        },
         "403": {
           "description": "Unauthorized access: UserID does not match user token"
         },
@@ -250,9 +247,6 @@
               }
             }
           }
-        },
-        "401": {
-          "description": "Invalid header input"
         },
         "403": {
           "description": "Unauthorized access: UserID does not match user token"
@@ -325,9 +319,6 @@
         "400": {
           "description": "Invalid body input"
         },
-        "401": {
-          "description": "Invalid header input credentials"
-        },
         "403": {
           "description": "Unauthorized access: UserID does not match user token"
         },
@@ -391,9 +382,6 @@
         "400": {
           "description": "Invalid body input or invalid character length of title and/or text input"
         },
-        "401": {
-          "description": "Invalid header input credentials"
-        },
         "403": {
           "description": "Unauthorized access: UserID does not match user token"
         },
@@ -450,9 +438,6 @@
         },
         "400": {
           "description": "Invalid body input"
-        },
-        "401": {
-          "description": "Invalid header input credentials"
         },
         "403": {
           "description": "Unauthorized access: UserID does not match user token"
@@ -515,9 +500,6 @@
         },
         "400": {
           "description": "Invalid body input"
-        },
-        "401": {
-          "description": "Invalid header input"
         },
         "403": {
           "description": "Unauthorized access: UserID does not match user token"

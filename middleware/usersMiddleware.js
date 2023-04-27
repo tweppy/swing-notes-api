@@ -56,14 +56,8 @@ async function checkPassword(req, res, next) {
   }
 }
 
-async function checkHeaders(req, res, next) {
-  !req.headers.authorization
-    ? res.status(401).json({ error: userErrors.invalidHeaders })
-    : next();
-}
-
 async function auth(req, res, next) {
-  const token = req.headers.authorization.replace("Bearer ", "");
+  const token = req.headers?.authorization.replace("Bearer ", "");
 
   try {
     const data = jwt.verify(token, "4815162342");
@@ -75,6 +69,7 @@ async function auth(req, res, next) {
   }
 }
 
+//so a user cannot access another user's note
 async function authUser(req, res, next) {
   const { userID } = req.body;
 
@@ -89,7 +84,6 @@ module.exports = {
   checkUsername,
   checkPassword,
   auth,
-  checkHeaders,
   authUser,
   checkBodyAccount,
 };

@@ -1,11 +1,9 @@
 const userErrors = {
   unauthorizedUser: "Unauthorized access: UserID does not match user token.",
-  invalidToken: "Invalid token.",
+  invalidToken: "Invalid token input.",
   invalidBody:
     "Invalid body input. Please enter a valid username and password of 3 characters or more each.",
   invalidBodyAccount: "Invalid body input. Please enter a valid userID.",
-  invalidHeaders:
-    "Invalid header input credentials. Please use 'Authorization' header and input correct token.",
   incorrectPassword: "Incorrect password.",
   usernameNotFound: "Invalid username: Username not found.",
   usernameTaken: "Invalid username: Username is taken.",

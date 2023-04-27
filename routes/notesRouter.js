@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { auth, checkHeaders, authUser } = require("../middleware/usersMiddleware");
+const { auth,  authUser } = require("../middleware/usersMiddleware");
 const { get, add, edit, remove, search } = require("../controllers/notesController");
 const {
   checkBody,
@@ -13,10 +13,10 @@ const {
   checkSearchBody,
 } = require("../middleware/notesMiddleware");
 
-router.get("/", checkHeaders, auth, authUser, get);
-router.post("/", checkBody, checkLength, checkNoteTitle, checkHeaders, auth, authUser, add);
-router.put("/", checkNoteId, checkEditedBody, checkLength, checkHeaders, auth, authUser, edit);
-router.delete("/", checkNoteId, checkBody, checkHeaders, auth, authUser, remove);
-router.get("/search", checkSearchBody, checkHeaders, auth, authUser, searchByTitle, search);
+router.get("/", auth, authUser, get);
+router.post("/", checkBody, checkLength, checkNoteTitle, auth, authUser, add);
+router.put("/", checkNoteId, checkEditedBody, checkLength, auth, authUser, edit);
+router.delete("/", checkNoteId, checkBody, auth, authUser, remove);
+router.get("/search", checkSearchBody, auth, authUser, searchByTitle, search);
 
 module.exports = router;
