@@ -99,6 +99,9 @@
         },
         "409": {
           "description": "Username already exists"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     },
@@ -144,6 +147,9 @@
         },
         "404": {
           "description": "Username not found"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     },
@@ -200,6 +206,9 @@
         },
         "498": {
           "description": "Invalid token"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     }
@@ -250,6 +259,9 @@
         },
         "498": {
           "description": "Invalid token"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     },
@@ -324,6 +336,9 @@
         },
         "498": {
           "description": "Invalid token"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     },
@@ -387,6 +402,9 @@
         },
         "498": {
           "description": "Invalid token"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     },
@@ -444,6 +462,9 @@
         },
         "498": {
           "description": "Invalid token"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     }
@@ -506,6 +527,9 @@
         },
         "498": {
           "description": "Invalid token"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
     }
