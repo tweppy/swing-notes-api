@@ -68,10 +68,11 @@ async function searchByTitle(req, res, next) {
 }
 
 async function checkNoteId(req, res, next) {
-  const { id } = req.body;
+  const { id, userID } = req.body;
   const note = await findNoteById(id);
+  const matchUserToNote = note?.userID === userID;
 
-  note ? next() : res.status(404).json({ error: noteErrors.invalidId });
+  note && matchUserToNote ? next() : res.status(404).json({ error: noteErrors.invalidId });
 }
 
 module.exports = {

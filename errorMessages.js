@@ -17,7 +17,7 @@ const noteErrors = {
     "You must include userID, text and title field, even if only editing one of them. You can leave the other field empty.",
   invalidLength:
     "Invalid character length. Title length must be between 2-50 characters and text 2-300 characters. If editing a note, at least one field must be changed.",
-  invalidId: "Invalid ID.",
+  invalidId: "Invalid ID: Note ID not found in user's notes.",
   titleTaken:
     "A note with that title already exists. Please use a different title.",
   titleNotFound: "No match found.",
