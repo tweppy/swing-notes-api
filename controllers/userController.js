@@ -1,9 +1,7 @@
 const { addUser, findUserByID } = require("../models/userModel");
 
-//signup
 async function userSignup(req, res) {
   const credentials = req.body;
-
   await addUser(credentials);
 
   const result = {
@@ -14,7 +12,6 @@ async function userSignup(req, res) {
   res.status(200).json(result);
 }
 
-//login
 async function userLogin(req, res) {
   const { username } = req.body;
 
@@ -26,7 +23,6 @@ async function userLogin(req, res) {
   res.status(200).json(result);
 }
 
-//account
 async function userAccount(req, res) {
   const user = await findUserByID(req.id);
 

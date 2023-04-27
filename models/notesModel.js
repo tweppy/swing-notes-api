@@ -1,35 +1,19 @@
 const Datastore = require("nedb-promises");
 let notesDB = Datastore.create("./databases/notes.db");
 const { v4: uuidv4 } = require("uuid");
-const { findUser } = require("../models/userModel");
 
-//get all notes
-async function getAllNotes() {
-  // notesDB.remove({}, { multi: true })
-  return await notesDB.find({});
+async function getAllNotes(userID) {
+  return await notesDB.find({ userID: userID });
 }
 
-//find note by title
 async function findNoteByTitle(title) {
   return await notesDB.findOne({ title: title });
 }
 
-//almost the same as above, but it clashes with looking up a taken title middleware, so here's another one specifically for the search function
-// async function searchTitle(title) {
-//   const result =  await notesDB.findOne({ title: title });
-//   if(result == null) {
-//     return 'boi'
-//   }
-
-//   return result;
-// }
-
-//find note by id
 async function findNoteById(id) {
   return await notesDB.findOne({ id: id });
 }
 
-//add note
 async function addNote(data, user) {
   const noteObj = {
     id: uuidv4(),
@@ -38,13 +22,12 @@ async function addNote(data, user) {
     createdAt: new Date().toLocaleString(),
     modifiedAt: new Date().toLocaleString(),
     username: user.username,
-    userID: user.userID
+    userID: user.userID,
   };
 
   return await notesDB.insert(noteObj);
 }
 
-//edit note
 //Must have title, text, id when trying to edit. If editing title only, text field can be empty string, but the prop must be there
 async function editNote(data) {
   const matchNote = await findNoteById(data.id);
@@ -60,7 +43,6 @@ async function editNote(data) {
   return await notesDB.update({ id: data.id }, noteObj);
 }
 
-//delete note
 async function removeNote(data) {
   return await notesDB.remove({ id: data.id });
 }
@@ -73,11 +55,3 @@ module.exports = {
   editNote,
   removeNote,
 };
-
-/*
-id	        String	Ett genererat ID för denna anteckning.
-title	    String	Titeln på anteckningen. Max 50 tecken.
-text	    String	Själva anteckningstexten, max 300 tecken.
-createdAt	Date	När anteckningen skapades.
-modifiedAt	Date	När anteckningen sist modifierades.
-*/

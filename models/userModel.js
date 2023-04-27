@@ -3,12 +3,6 @@ let userDB = Datastore.create("./databases/users.db");
 const { hashPassword } = require("../utils");
 const { v4: uuidv4 } = require("uuid");
 
-//getAllUsers  ---> do I need it?
-async function getAllUsers() {
-  return await userDB.find({});
-}
-
-//addUser
 async function addUser(credentials) {
   const password = await hashPassword(credentials.password);
   const userObj = {
@@ -20,14 +14,12 @@ async function addUser(credentials) {
   return await userDB.insert(userObj);
 }
 
-//find user by username
 async function findUser(username) {
   return await userDB.findOne({ username: username });
 }
 
-//find user by id
 async function findUserByID(userID) {
   return await userDB.findOne({ userID: userID });
 }
 
-module.exports = { getAllUsers, addUser, findUser, findUserByID, userDB };
+module.exports = { addUser, findUser, findUserByID, userDB };

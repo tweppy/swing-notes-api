@@ -7,16 +7,14 @@ const {
 } = require("../models/notesModel");
 const { findUserByID } = require("../models/userModel");
 
-//get
 async function get(req, res) {
-  const data = await getAllNotes();
+  const { userID } = req.body;
+  const data = await getAllNotes(userID);
   res.status(200).json(data);
 }
 
-//add
 async function add(req, res) {
   const data = req.body;
-
   const user = await findUserByID(req.id);
   await addNote(data, user);
 
@@ -30,7 +28,6 @@ async function add(req, res) {
   res.status(200).json(result);
 }
 
-//edit
 async function edit(req, res) {
   const data = req.body;
   await editNote(data);
@@ -38,7 +35,6 @@ async function edit(req, res) {
   res.status(200).json({ message: `Note '${data.id}' has been edited.` });
 }
 
-//remove
 async function remove(req, res) {
   const data = req.body;
   await removeNote(data);
@@ -48,7 +44,6 @@ async function remove(req, res) {
 
 async function search(req, res) {
   const { title } = req.body;
-
   const result = await findNoteByTitle(title);
 
   res.status(200).json({ result: result });

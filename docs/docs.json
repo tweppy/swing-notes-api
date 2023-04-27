@@ -26,6 +26,14 @@
           }
         }
       },
+      "UserID": {
+        "type": "object",
+        "properties": {
+          "userID": {
+            "type": "string"
+          }
+        }
+      },
       "Note": {
         "type": "object",
         "properties": {
@@ -148,6 +156,16 @@
             "bearerAuth": []
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userID"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -171,8 +189,14 @@
             }
           }
         },
+        "400": {
+          "description": "Invalid body input"
+        },
         "401": {
           "description": "Invalid header input credentials"
+        },
+        "403": {
+          "description": "Unauthorized access: UserID does not match user token"
         },
         "498": {
           "description": "Invalid token"
@@ -189,6 +213,16 @@
           "bearerAuth": []
         }
       ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/userID"
+            }
+          }
+        }
+      },
       "responses": {
         "200": {
           "description": "Successful operation",
@@ -210,6 +244,9 @@
         },
         "401": {
           "description": "Invalid header input"
+        },
+        "403": {
+          "description": "Unauthorized access: UserID does not match user token"
         },
         "498": {
           "description": "Invalid token"
@@ -236,7 +273,8 @@
                 },
                 "text": {
                   "type": "string"
-                }
+                },
+                "$ref": "#/components/schemas/userID"
               }
             }
           }
@@ -273,13 +311,16 @@
           }
         },
         "400": {
-          "description": "Invalid body input or invalid character length of title and/or text input"
+          "description": "Invalid body input"
         },
         "401": {
           "description": "Invalid header input credentials"
         },
+        "403": {
+          "description": "Unauthorized access: UserID does not match user token"
+        },
         "409": {
-          "description": "Note with title already"
+          "description": "Note with title already exists"
         },
         "498": {
           "description": "Invalid token"
@@ -309,7 +350,8 @@
                 },
                 "text": {
                   "type": "string"
-                }
+                },
+                "$ref": "#/components/schemas/userID"
               }
             }
           }
@@ -337,6 +379,9 @@
         "401": {
           "description": "Invalid header input credentials"
         },
+        "403": {
+          "description": "Unauthorized access: UserID does not match user token"
+        },
         "404": {
           "description": "Invalid note ID"
         },
@@ -362,7 +407,8 @@
               "properties": {
                 "id": {
                   "type": "string"
-                }
+                },
+                "$ref": "#/components/schemas/userID"
               }
             }
           }
@@ -390,6 +436,9 @@
         "401": {
           "description": "Invalid header input credentials"
         },
+        "403": {
+          "description": "Unauthorized access: UserID does not match user token"
+        },
         "404": {
           "description": "Invalid note ID"
         },
@@ -408,6 +457,22 @@
           "bearerAuth": []
         }
       ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "$ref": "#/components/schemas/userID"
+              }
+            }
+          }
+        }
+      },
       "responses": {
         "200": {
           "description": "Successful operation",
@@ -432,6 +497,9 @@
         },
         "401": {
           "description": "Invalid header input"
+        },
+        "403": {
+          "description": "Unauthorized access: UserID does not match user token"
         },
         "404": {
           "description": "No match found"

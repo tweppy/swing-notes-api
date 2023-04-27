@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const {
   userSignup,
   userLogin,
@@ -13,10 +12,12 @@ const {
   checkPassword,
   auth,
   checkHeaders,
+  authUser,
+  checkBodyAccount,
 } = require("../middleware/usersMiddleware");
 
 router.post("/signup", checkBody, checkIfUserExists, userSignup);
 router.post("/login", checkBody, checkUsername, checkPassword, userLogin);
-router.get("/account", checkHeaders, auth, userAccount);
+router.get("/account", checkBodyAccount, checkHeaders, auth, authUser, userAccount);
 
 module.exports = router;

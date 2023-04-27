@@ -1,69 +1,50 @@
 const { findUser } = require("../models/userModel");
 const { comparePassword } = require("../utils");
+const { userErrors } = require("../errorMessages");
 const jwt = require("jsonwebtoken");
 
-//change this: -->  notes file look
-const result = {
-  success: false,
-};
-
-//checkBody
 function checkBody(req, res, next) {
-  const body = req.body;
-  // userDB.remove({}, { multi: true })
+  const { username, password } = req.body;
+  const usernameLength = username.length >= 3;
+  const passwordLength = password.length >= 3;
 
-  if (body?.username && body?.password) {
-    next();
-  } else {
-    result.message =
-      "Invalid body input. Please enter a valid username and password.";
-    result.usernameInput = body.hasOwnProperty("username");
-    result.passwordInput = body.hasOwnProperty("password");
-
-    res.status(400).json(result);
-  }
+  usernameLength && passwordLength
+    ? next()
+    : res.status(400).json({ error: userErrors.invalidBody });
 }
 
-//checkIfUserExists for sign up
+function checkBodyAccount(req, res, next) {
+  const { userID } = req.body;
+
+  userID
+    ? next()
+    : res.status(400).json({ error: userErrors.invalidBodyAccount });
+}
+
 async function checkIfUserExists(req, res, next) {
   const { username } = req.body;
+  const usernameExists = await findUser(username);
 
-  const user = await findUser(username);
-
-  if (!user) {
-    next();
-  } else {
-    result.message = `User '${username}' already exists.`;
-
-    res.status(409).json(result);
-  }
+  !usernameExists
+    ? next()
+    : res.status(409).json({ error: userErrors.usernameTaken });
 }
 
-//login:
-
-//check username
 async function checkUsername(req, res, next) {
   const { username } = req.body;
-  const user = await findUser(username);
+  const validUser = await findUser(username);
 
-  if (user) {
-    next();
-  } else {
-    result.message = `User '${username}' not found.`;
-
-    res.status(404).json(result);
-  }
+  validUser
+    ? next()
+    : res.status(404).json({ error: userErrors.usernameNotFound });
 }
 
-//check pwd
 async function checkPassword(req, res, next) {
   const { username, password } = req.body;
   const user = await findUser(username);
-
   const correctPassword = await comparePassword(password, user.password);
 
   if (correctPassword) {
-    //save 4815162342 in env?
     const token = jwt.sign({ userID: user.userID }, "4815162342", {
       expiresIn: 3600, // 1 hour
     });
@@ -71,32 +52,35 @@ async function checkPassword(req, res, next) {
 
     next();
   } else {
-    result.message = "Incorrect password.";
-
-    res.status(401).json(result);
+    res.status(401).json({ error: userErrors.incorrectPassword });
   }
 }
 
 async function checkHeaders(req, res, next) {
   !req.headers.authorization
-    ? res.status(401).json({ error: "Invalid header input credentials. Please use 'Authorization' header and input correct token." })
+    ? res.status(401).json({ error: userErrors.invalidHeaders })
     : next();
 }
 
-//auth
 async function auth(req, res, next) {
   const token = req.headers.authorization.replace("Bearer ", "");
 
   try {
     const data = jwt.verify(token, "4815162342");
     req.id = data.userID;
-    console.log(data);
 
     next();
   } catch (error) {
-    result.error = "Invalid token.";
-    res.status(498).json(result);
+    res.status(498).json({ error: userErrors.invalidToken });
   }
+}
+
+async function authUser(req, res, next) {
+  const { userID } = req.body;
+
+  userID === req.id
+    ? next()
+    : res.status(403).json({ error: userErrors.unauthorizedUser });
 }
 
 module.exports = {
@@ -106,4 +90,6 @@ module.exports = {
   checkPassword,
   auth,
   checkHeaders,
+  authUser,
+  checkBodyAccount,
 };
